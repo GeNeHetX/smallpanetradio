@@ -1,0 +1,20 @@
+Package: smallpanetradio
+Type: Package
+Title: Predicts the metastatic status of small pancreatic neuroendocrine tumors from radiomics features
+Version: 0.2.0
+Author: Remy Nicolle
+Maintainer: Remy Nicolle <remy.nicolle@inserm.fr>
+Description: Takes CT scan data, segmented and extracted using pyradiomics
+    For instance using 3d slicer, and predict likelyhood of distant metastasis.
+    provides a shiny app
+License: CC BY-NC 4.0
+Encoding: UTF-8
+LazyData: true
+Imports:
+    openxlsx,
+    shiny,
+    shinyjs,
+    ggpubr,
+    Matrix
+Depends: 
+    R (>= 3.5)

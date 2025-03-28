@@ -1,0 +1,18 @@
+* Build the Docker image: `docker build -t your-shiny-app .`
+* Test the docker image locally: `docker run -p 3838:3838 your-shiny-app`
+* Tag your image: `docker tag your-shiny-app gcr.io/your-project-id/your-shiny-app`
+* Push the image: `docker push gcr.io/your-project-id/your-shiny-app`
+
+
+
+
+Deploy to Google Cloud Run:
+- Go to the Cloud Run service in the Google Cloud Console.
+- Click "Create Service."
+- Select "Container image" and specify the image URL from GCR.
+- Configure settings:
+- Set the port to 3838.
+- Adjust CPU and memory settings as needed.
+- Configure scaling options.
+- Configure ingress settings.
+- Click "Create."
