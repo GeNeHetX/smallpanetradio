@@ -1,11 +1,24 @@
 # Small pancreatic Neuroendocrine Tumors
-R package for quick pathway loading and analysis
+R package to predict probability of metastatic pancreatic NET from CT scan features
 
 
-Install
+
+# Install
 ```R
 install.packages("BiocManager")
-BiocManager::install(c("devtools","fgsea"))
-devtools::install_github("GeNeHetX/qpathway")
+BiocManager::install(c("devtools"))
+devtools::install_github("GeNeHetX/smallpanetradio")
 
 ```
+
+# Web app
+To run the interactive Shiny webapp :
+```R
+library(smallpanetradio)
+runShinyApp()
+```
+
+
+# Warning
+
+**This tool is intended for research purposes only and should not be used for clinical or diagnostic decision-making.**
