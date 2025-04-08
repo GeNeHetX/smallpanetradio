@@ -68,6 +68,8 @@ checkRadiomicdataframe=function(df,phasename,verbose=TRUE,throwError=FALSE){
 
 }
 
+
+# file="/Users/remy.nicolle/Workspace/PDAC_aux/TNERadio/datasets/JeremyTest.xlsx";phasename="art";xltab=1;verbose=T
 radiomicXlHelper=function(file,phasename,xltab=1,verbose=TRUE,throwError=FALSE){
   rawtab=openxlsx::read.xlsx(file,sheet=xltab)
   coli=4:ncol(rawtab)
@@ -319,7 +321,7 @@ radiopred=function(newdata,pcaglmodel,refdata=NULL){
 
     print(ggviolin(refpred, x = "ref", y = "prob",ylab="Prediction of metastatic disease probability",
                    add = "boxplot",
-                   title=c(art="Arterial phase",port="Portal phase")[label],
+                   title=c(art="Arterial phase",port="Portal phase",both="Combined phase")[label],
                             subtitle = paste("Anomaly evaluation:", newpred$anomaly[1])) +
             geom_hline(yintercept=newpred$prob[1],
                        color=c("loc"="blue","met"="red")[(newpred$prob[1] >0.5)+1], size=1.5)+
@@ -339,7 +341,8 @@ if(F){
  
 
   library(smallpanetradio)
-  xlfile="/Users/remy.nicolle/Workspace/PDAC_aux/TNERadio/datasets/JulesGregoryTEST2.xlsx"
+  # xlfile="/Users/remy.nicolle/Workspace/PDAC_aux/TNERadio/datasets/JulesGregoryTEST2.xlsx"
+  
   # newdata=smallpanetradio:::radiomicXlHelper(xlfile,"port")
   # smallpanetradio:::.readxl(xlfile,"art")
 
@@ -349,6 +352,12 @@ if(F){
   coms=intersect(rownames(smallpanetradio::refartdata),rownames(smallpanetradio::refartdata))
   bothref=data.frame(smallpanetradio::refartdata[coms,],smallpanetradio::refportdata[coms,])
   
+  
+
+
+  radiopred(artdata,smallpanetradio::MODELS$artmodel,smallpanetradio::refartdata)
+  radiopred(artdata[1,],smallpanetradio::MODELS$artmodel,smallpanetradio::refartdata)
+
   radiopred(newartdata,smallpanetradio::MODELS$artmodel,smallpanetradio::refartdata)
   radiopred(newartdata[1,],smallpanetradio::MODELS$artmodel,smallpanetradio::refartdata)
   
@@ -369,11 +378,17 @@ if(F){
   bothvar=rownames( smallpanetradio::MODELS$bothmodel$PCA$var$contrib)
 
 
+  intersect(colnames(smallpanetradio::refartdata),colnames(newartdata))
 
+  mean(artvar %in% colnames(newartdata))
+  mean(colnames(newartdata) %in% artvar )
 
   mean(bothvar %in% colnames(newbotgdata))
   colnames(newbotgdata)[which(!colnames(newbotgdata) %in% bothvar)]
   bothvar[which(!bothvar %in% colnames(newbotgdata))]
+  colnames( newartdata)[which(!colnames( newartdata) %in% colnames(smallpanetradio::refartdata))]
+  artvar[which(!artvar %in% colnames(newartdata))]
+
   bothvar[which(!bothvar %in% setdiff(colnames(newartdata),colnames(newportdata)))]
 
   bothvar[which(!bothvar %in% colnames(newbotgdata))]

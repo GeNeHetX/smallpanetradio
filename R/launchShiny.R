@@ -8,6 +8,6 @@ runShinyApp=function(){
 
       
   
-  shiny::runApp( system.file("shinyapp", package = "smalltneradio")) 
+  shiny::runApp( system.file("shinyapp", package = "smallpanetradio")) 
 }
 

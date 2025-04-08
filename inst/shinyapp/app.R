@@ -56,12 +56,14 @@ shinyApp(
       artmsg="No file"
       portmsg="No file"
       
+
       artdata=NULL
       if(!is.null(artfile$datapath)){
         # artdata=readxl::read_xlsx(artfile$datapath) 
 
 
         tryCatch({
+              # artdata=radiomicXlHelper(xlfile,"art",throwError=T)
               artdata=radiomicXlHelper(artfile$datapath,"art",throwError=T)
             },  error = function(e) {
               print(paste("Error:", e$message))
@@ -72,6 +74,7 @@ shinyApp(
         }
       }
 
+      print(artmsg)
       portdata=NULL
 
       if(!is.null(portfile$datapath)){
@@ -86,7 +89,7 @@ shinyApp(
         }
       }
 
-
+      print(portmsg)
       
       
       refbothpred=NULL
@@ -105,8 +108,18 @@ shinyApp(
 
       artpred=NULL;refartpred=NULL
       if(!is.null(artdata)){
+        print("Yes there is artdata")
+        print(dim(artdata))
+        
 
-        artpred=radiopred(artdata,smallpanetradio::MODELS$artmodel,smallpanetradio::refartdata)
+        if(nrow(artdata)==1){
+          print("One row, so treated as a single patient")
+          
+          artpred=radiopred(artdata[1,],smallpanetradio::MODELS$artmodel,smallpanetradio::refartdata)
+        }else{
+           artpred=radiopred(artdata,smallpanetradio::MODELS$artmodel,smallpanetradio::refartdata)
+        }
+        
         refartpred=radiopred(smallpanetradio::refartdata,smallpanetradio::MODELS$artmodel)
         refartpred=data.frame(smallpanetradio::refclin[rownames(refartpred),],refartpred)
            
@@ -114,8 +127,13 @@ shinyApp(
 
       portpred=NULL;refportpred=NULL
         if(!is.null(portdata)){
+        if(nrow(portdata)==1){
+                  print("One row, so treated as a single patient")
+            portpred=radiopred(portdata[1,],smallpanetradio::MODELS$portmodel,smallpanetradio::refportdata)
+        }else{
 
-        portpred=radiopred(portdata,smallpanetradio::MODELS$portmodel,smallpanetradio::refportdata)
+          portpred=radiopred(portdata,smallpanetradio::MODELS$portmodel,smallpanetradio::refportdata)
+        }
         refportpred=radiopred(smallpanetradio::refportdata,smallpanetradio::MODELS$portmodel)
         refportpred=data.frame(smallpanetradio::refclin[rownames(refportpred),],refportpred)
            
@@ -138,7 +156,7 @@ shinyApp(
          par(mar = c(0, 0, 0, 0))    
           plot(x = 0:10, y = 0:10, ann = F,bty = "n",type = "n",
          xaxt = "n", yaxt = "n")
-          text(x = 5,y = 5,paste0("Could not retrive data for Both phases"),cex=2)
+          text(x = 5,y = 5,paste0("Could not retrieve data for Both phases"),cex=2)
       }
     })
 
@@ -152,7 +170,7 @@ shinyApp(
         par(mar = c(0, 0, 0, 0))    
         plot(x = 0:10, y = 0:10, ann = F,bty = "n",type = "n",
              xaxt = "n", yaxt = "n")
-        text(x = 5,y = 5,paste0("Could not retrive data for Arterial phase"),cex=2)
+        text(x = 5,y = 5,paste0("Could not retrieve data for Arterial phase"),cex=2)
       }
       
     })
